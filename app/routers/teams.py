@@ -8,9 +8,10 @@ from app.models.schools import School
 from app.models.games import Game
 from app.models.power_ratings import PowerRating
 from app.models.predictions import ProjectedRating, GameImpactAnalysis
+from app.models.hype import HypeScore
 from app.models.users import User
 from app.auth import get_current_user, require_premium
-from app.schemas.schemas import TeamOut, GameOut, PowerRatingOut, ProjectedRatingOut, WhatsAtStakeOut
+from app.schemas.schemas import TeamOut, GameOut, PowerRatingOut, ProjectedRatingOut, WhatsAtStakeOut, HypeScoreOut
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
@@ -219,3 +220,22 @@ async def get_whats_at_stake(
         projected_rank_if_loss=rank_loss,
         playoff_prob_if_loss=pp_loss,
     )
+
+
+@router.get("/{team_id}/hype", response_model=HypeScoreOut)
+async def get_team_hype(team_id: int, db: AsyncSession = Depends(get_db)):
+    """Get latest hype score for a team."""
+    result = await db.execute(select(Team).where(Team.id == team_id))
+    if not result.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Team not found")
+
+    hype_result = await db.execute(
+        select(HypeScore)
+        .where(HypeScore.team_id == team_id)
+        .order_by(HypeScore.season_year.desc(), HypeScore.week_number.desc())
+        .limit(1)
+    )
+    hype = hype_result.scalar_one_or_none()
+    if not hype:
+        raise HTTPException(status_code=404, detail="No hype data found for this team")
+    return hype

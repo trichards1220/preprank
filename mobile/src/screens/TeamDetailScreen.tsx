@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, fontSize, spacing } from '../theme/colors';
 import PowerRatingBadge from '../components/PowerRatingBadge';
 import WhatsAtStakeCard from '../components/WhatsAtStakeCard';
+import HypeCard from '../components/HypeCard';
 import {
   mockTeams, mockSchools, mockPowerRatings, mockProjections,
-  mockGames, mockWhatsAtStake,
+  mockGames, mockWhatsAtStake, mockHypeScores,
 } from '../mock/data';
 
 export default function TeamDetailScreen({ route, navigation }: any) {
@@ -17,6 +18,7 @@ export default function TeamDetailScreen({ route, navigation }: any) {
   const proj = mockProjections[teamId];
   const games = mockGames.filter(g => g.home_team_id === teamId || g.away_team_id === teamId);
   const stake = mockWhatsAtStake.team_id === teamId ? mockWhatsAtStake : null;
+  const hype = mockHypeScores.find(h => h.team_id === teamId);
 
   if (!team || !school) {
     return (
@@ -51,6 +53,14 @@ export default function TeamDetailScreen({ route, navigation }: any) {
         <Text style={styles.schoolLinkText}>View all {school.name} teams</Text>
         <Ionicons name="chevron-forward" size={14} color={colors.textMuted} />
       </TouchableOpacity>
+
+      {/* Hype Score */}
+      {hype && (
+        <>
+          <Text style={styles.sectionTitle}>HYPE SCORE</Text>
+          <HypeCard hype={hype} />
+        </>
+      )}
 
       {/* Projected Rating */}
       {proj && (

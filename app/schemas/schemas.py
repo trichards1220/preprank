@@ -238,3 +238,99 @@ class NotificationOut(BaseModel):
     read_status: bool
     sent_at: datetime | None = None
     model_config = {"from_attributes": True}
+
+
+# --- Pick'em ---
+
+class PickemContestOut(BaseModel):
+    id: int
+    sport_id: int
+    season_year: int
+    week_number: int
+    name: str
+    status: str
+    model_config = {"from_attributes": True}
+
+class PickemSlateOut(BaseModel):
+    id: int
+    contest_id: int
+    game_id: int
+    model_config = {"from_attributes": True}
+
+class PickemPickCreate(BaseModel):
+    slate_id: int
+    game_id: int
+    picked_winner_team_id: int
+
+class PickemPickOut(BaseModel):
+    id: int
+    slate_id: int
+    game_id: int
+    picked_winner_team_id: int
+    is_correct: bool | None = None
+    points_earned: int
+    picked_at: datetime | None = None
+    model_config = {"from_attributes": True}
+
+class PickemLeaderboardEntry(BaseModel):
+    user_id: int
+    school_name: str | None = None
+    total_points: int
+    correct_picks: int
+    upset_picks: int
+    rank: int | None = None
+    streak: int
+
+class SchoolLeaderboardEntry(BaseModel):
+    school_id: int
+    school_name: str
+    total_points: int
+    avg_accuracy: float | None = None
+    participant_count: int
+
+
+# --- Hype ---
+
+class HypeScoreOut(BaseModel):
+    team_id: int
+    week_number: int
+    season_year: int
+    hype_score: float
+    momentum_direction: str
+    win_streak: int
+    rating_change_4wk: float | None = None
+    model_config = {"from_attributes": True}
+
+class HypeRivalryOut(BaseModel):
+    sport_id: int
+    district: str
+    teams: list[HypeScoreOut]
+
+
+# --- Badges ---
+
+class BadgeOut(BaseModel):
+    id: int
+    name: str
+    description: str
+    icon: str
+    rarity: str
+    criteria_type: str
+    model_config = {"from_attributes": True}
+
+class UserBadgeOut(BaseModel):
+    id: int
+    badge_id: int
+    badge_name: str
+    badge_icon: str
+    badge_rarity: str
+    earned_at: datetime | None = None
+    description: str | None = None
+    model_config = {"from_attributes": True}
+
+class BadgeLeaderboardEntry(BaseModel):
+    user_id: int
+    first_name: str | None = None
+    last_name: str | None = None
+    badge_count: int
+    rarest_badge: str | None = None

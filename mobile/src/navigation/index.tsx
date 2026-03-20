@@ -15,6 +15,9 @@ import AthleteDetailScreen from '../screens/AthleteDetailScreen';
 import StandingsScreen from '../screens/StandingsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import PickemScreen from '../screens/PickemScreen';
+import PickemLeaderboardScreen from '../screens/PickemLeaderboardScreen';
+import BadgesScreen from '../screens/BadgesScreen';
 
 const PrepRankTheme = {
   ...DefaultTheme,
@@ -52,6 +55,16 @@ function HomeStack() {
   );
 }
 
+function PlayStack() {
+  return (
+    <Stack.Navigator screenOptions={screenOptions}>
+      <Stack.Screen name="PickemMain" component={PickemScreen} options={{ title: "Pick'em" }} />
+      <Stack.Screen name="PickemLeaderboard" component={PickemLeaderboardScreen} options={{ title: 'Leaderboard' }} />
+      <Stack.Screen name="Badges" component={BadgesScreen} options={{ title: 'Badges' }} />
+    </Stack.Navigator>
+  );
+}
+
 function BrowseStack() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
@@ -74,10 +87,11 @@ function NotificationsStack() {
   );
 }
 
-function SettingsStack() {
+function SettingsStackNav() {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="SettingsMain" component={SettingsScreen} options={{ title: 'Settings' }} />
+      <Stack.Screen name="Badges" component={BadgesScreen} options={{ title: 'Badges' }} />
     </Stack.Navigator>
   );
 }
@@ -100,6 +114,7 @@ function MainTabs() {
         tabBarIcon: ({ color, size }) => {
           const icons: Record<string, string> = {
             Home: 'home',
+            Play: 'game-controller',
             Browse: 'grid',
             Notifications: 'notifications',
             Settings: 'settings',
@@ -109,13 +124,14 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Play" component={PlayStack} />
       <Tab.Screen name="Browse" component={BrowseStack} />
       <Tab.Screen
         name="Notifications"
         component={NotificationsStack}
         options={{ tabBarBadge: 2 }}
       />
-      <Tab.Screen name="Settings" component={SettingsStack} />
+      <Tab.Screen name="Settings" component={SettingsStackNav} />
     </Tab.Navigator>
   );
 }

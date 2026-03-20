@@ -4,8 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
 from app.models.users import User, UserFavorite, Notification
+from app.models.badges import Badge, UserBadge
 from app.auth import get_current_user
-from app.schemas.schemas import UserOut, UserUpdate, FavoriteCreate, FavoriteOut, NotificationOut
+from app.schemas.schemas import UserOut, UserUpdate, FavoriteCreate, FavoriteOut, NotificationOut, UserBadgeOut
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -135,3 +136,73 @@ async def mark_notification_read(
     await db.commit()
     await db.refresh(notif)
     return notif
+
+
+@router.get("/me/badges", response_model=list[UserBadgeOut])
+async def list_my_badges(
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get badges for the current user."""
+    result = await db.execute(
+        select(
+            UserBadge.id,
+            UserBadge.badge_id,
+            Badge.name.label("badge_name"),
+            Badge.icon.label("badge_icon"),
+            Badge.rarity.label("badge_rarity"),
+            UserBadge.earned_at,
+            UserBadge.description,
+        )
+        .join(Badge, UserBadge.badge_id == Badge.id)
+        .where(UserBadge.user_id == user.id)
+        .order_by(UserBadge.earned_at.desc())
+    )
+    rows = result.all()
+    return [
+        UserBadgeOut(
+            id=r.id,
+            badge_id=r.badge_id,
+            badge_name=r.badge_name,
+            badge_icon=r.badge_icon,
+            badge_rarity=r.badge_rarity,
+            earned_at=r.earned_at,
+            description=r.description,
+        )
+        for r in rows
+    ]
+
+
+@router.get("/{user_id}/badges", response_model=list[UserBadgeOut])
+async def list_user_badges(
+    user_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    """Get badges for any user."""
+    result = await db.execute(
+        select(
+            UserBadge.id,
+            UserBadge.badge_id,
+            Badge.name.label("badge_name"),
+            Badge.icon.label("badge_icon"),
+            Badge.rarity.label("badge_rarity"),
+            UserBadge.earned_at,
+            UserBadge.description,
+        )
+        .join(Badge, UserBadge.badge_id == Badge.id)
+        .where(UserBadge.user_id == user_id)
+        .order_by(UserBadge.earned_at.desc())
+    )
+    rows = result.all()
+    return [
+        UserBadgeOut(
+            id=r.id,
+            badge_id=r.badge_id,
+            badge_name=r.badge_name,
+            badge_icon=r.badge_icon,
+            badge_rarity=r.badge_rarity,
+            earned_at=r.earned_at,
+            description=r.description,
+        )
+        for r in rows
+    ]

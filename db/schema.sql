@@ -251,3 +251,96 @@ INSERT INTO sports (name, season, has_power_rating) VALUES
     ('Boys Swimming', 'fall', FALSE),
     ('Girls Swimming', 'fall', FALSE)
 ON CONFLICT DO NOTHING;
+
+-- ============================================
+-- SOCIAL ENGAGEMENT TABLES
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS pickem_contests (
+    id SERIAL PRIMARY KEY,
+    sport_id INTEGER REFERENCES sports(id),
+    season_year INTEGER NOT NULL,
+    week_number INTEGER NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    status VARCHAR(20) DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'active', 'closed', 'scored')),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS pickem_slates (
+    id SERIAL PRIMARY KEY,
+    contest_id INTEGER REFERENCES pickem_contests(id) ON DELETE CASCADE,
+    game_id INTEGER REFERENCES games(id),
+    UNIQUE(contest_id, game_id)
+);
+
+CREATE TABLE IF NOT EXISTS pickem_picks (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    slate_id INTEGER REFERENCES pickem_slates(id),
+    game_id INTEGER REFERENCES games(id),
+    picked_winner_team_id INTEGER REFERENCES teams(id),
+    is_correct BOOLEAN,
+    points_earned INTEGER DEFAULT 0,
+    picked_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(user_id, slate_id, game_id)
+);
+
+CREATE TABLE IF NOT EXISTS pickem_leaderboard (
+    id SERIAL PRIMARY KEY,
+    contest_id INTEGER REFERENCES pickem_contests(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id),
+    school_id INTEGER REFERENCES schools(id),
+    total_points INTEGER DEFAULT 0,
+    correct_picks INTEGER DEFAULT 0,
+    upset_picks INTEGER DEFAULT 0,
+    rank INTEGER,
+    streak INTEGER DEFAULT 0,
+    UNIQUE(contest_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS hype_scores (
+    id SERIAL PRIMARY KEY,
+    team_id INTEGER REFERENCES teams(id),
+    week_number INTEGER NOT NULL,
+    season_year INTEGER NOT NULL,
+    hype_score DECIMAL(5,1) NOT NULL,
+    momentum_direction VARCHAR(10) NOT NULL CHECK (momentum_direction IN ('rising', 'falling', 'steady')),
+    win_streak INTEGER DEFAULT 0,
+    rating_change_4wk DECIMAL(5,2),
+    calculated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(team_id, week_number, season_year)
+);
+
+CREATE TABLE IF NOT EXISTS badges (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(500) NOT NULL,
+    icon VARCHAR(100) NOT NULL,
+    rarity VARCHAR(20) NOT NULL CHECK (rarity IN ('common', 'uncommon', 'rare', 'legendary')),
+    criteria_type VARCHAR(50) NOT NULL,
+    criteria_value INTEGER,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS user_badges (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    badge_id INTEGER REFERENCES badges(id),
+    earned_at TIMESTAMP DEFAULT NOW(),
+    game_id INTEGER REFERENCES games(id),
+    description VARCHAR(500)
+);
+
+-- Social Engagement Indexes
+CREATE INDEX idx_pickem_contests_status ON pickem_contests(status);
+CREATE INDEX idx_pickem_contests_sport_season ON pickem_contests(sport_id, season_year);
+CREATE INDEX idx_pickem_slates_contest ON pickem_slates(contest_id);
+CREATE INDEX idx_pickem_picks_user ON pickem_picks(user_id);
+CREATE INDEX idx_pickem_picks_slate ON pickem_picks(slate_id);
+CREATE INDEX idx_pickem_leaderboard_contest ON pickem_leaderboard(contest_id, total_points DESC);
+CREATE INDEX idx_pickem_leaderboard_school ON pickem_leaderboard(school_id);
+CREATE INDEX idx_hype_scores_team ON hype_scores(team_id, season_year);
+CREATE INDEX idx_hype_scores_week ON hype_scores(week_number, season_year);
+CREATE INDEX idx_badges_rarity ON badges(rarity);
+CREATE INDEX idx_user_badges_user ON user_badges(user_id);
+CREATE INDEX idx_user_badges_badge ON user_badges(badge_id);

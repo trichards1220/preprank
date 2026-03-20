@@ -158,3 +158,86 @@ export interface GameImpact {
   playoff_prob_if_home_wins: number | null;
   playoff_prob_if_away_wins: number | null;
 }
+
+// ── Pick'em ─────────────────────────────────────────────────
+export interface PickemContest {
+  id: number;
+  sport_id: number;
+  season_year: number;
+  week_number: number;
+  name: string;
+  status: string;
+}
+
+export interface PickemSlate {
+  id: number;
+  contest_id: number;
+  game_id: number;
+}
+
+export interface PickemPick {
+  id: number;
+  slate_id: number;
+  game_id: number;
+  picked_winner_team_id: number;
+  is_correct: boolean | null;
+  points_earned: number;
+  picked_at: string | null;
+}
+
+export interface PickemLeaderboardEntry {
+  user_id: number;
+  school_name: string | null;
+  total_points: number;
+  correct_picks: number;
+  upset_picks: number;
+  rank: number | null;
+  streak: number;
+}
+
+export interface SchoolLeaderboardEntry {
+  school_id: number;
+  school_name: string;
+  total_points: number;
+  avg_accuracy: number | null;
+  participant_count: number;
+}
+
+// ── Hype ────────────────────────────────────────────────────
+export interface HypeScore {
+  team_id: number;
+  week_number: number;
+  season_year: number;
+  hype_score: number;
+  momentum_direction: string;
+  win_streak: number;
+  rating_change_4wk: number | null;
+}
+
+// ── Badges ──────────────────────────────────────────────────
+export interface BadgeInfo {
+  id: number;
+  name: string;
+  description: string;
+  icon: string;
+  rarity: string;
+  criteria_type: string;
+}
+
+export interface UserBadge {
+  id: number;
+  badge_id: number;
+  badge_name: string;
+  badge_icon: string;
+  badge_rarity: string;
+  earned_at: string | null;
+  description: string | null;
+}
+
+export interface BadgeLeaderboardEntry {
+  user_id: number;
+  first_name: string | null;
+  last_name: string | null;
+  badge_count: number;
+  rarest_badge: string | null;
+}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Switch, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fontSize, spacing } from '../theme/colors';
 import Wordmark from '../components/Wordmark';
-import { mockUser } from '../mock/data';
+import BadgeCard from '../components/BadgeCard';
+import { mockUser, mockUserBadges } from '../mock/data';
 
 function SettingsRow({ icon, label, value, onPress }: {
   icon: string; label: string; value?: string; onPress?: () => void;
@@ -82,6 +83,24 @@ export default function SettingsScreen({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
+      {/* My Badges */}
+      <View style={styles.badgeSectionHeader}>
+        <Text style={styles.sectionTitle}>MY BADGES</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Badges')} activeOpacity={0.7}>
+          <Text style={styles.viewAllText}>View All</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.badgeScroll}
+        contentContainerStyle={styles.badgeScrollContent}
+      >
+        {mockUserBadges.map(badge => (
+          <BadgeCard key={badge.id} badge={badge} compact />
+        ))}
+      </ScrollView>
+
       {/* Notifications */}
       <Text style={styles.sectionTitle}>NOTIFICATION PREFERENCES</Text>
       <View style={styles.section}>
@@ -155,6 +174,22 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   manageButtonText: { color: colors.white, fontSize: fontSize.sm, fontWeight: '600' },
+  badgeSectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  viewAllText: {
+    color: colors.crimson,
+    fontSize: fontSize.sm,
+    fontWeight: '700',
+  },
+  badgeScroll: {
+    marginBottom: spacing.sm,
+  },
+  badgeScrollContent: {
+    paddingVertical: spacing.xs,
+  },
   section: {
     backgroundColor: colors.card,
     borderRadius: 12,
