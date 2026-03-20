@@ -36,6 +36,13 @@ class ProjectedRating(Base):
     championship_probability: Mapped[float | None] = mapped_column(Numeric(5, 2))
     projected_wins_mean: Mapped[float | None] = mapped_column(Numeric(4, 1))
     projected_losses_mean: Mapped[float | None] = mapped_column(Numeric(4, 1))
+    # Playoff round advancement probabilities (percentage 0-100)
+    made_playoffs: Mapped[float | None] = mapped_column(Numeric(5, 2))
+    won_round1: Mapped[float | None] = mapped_column(Numeric(5, 2))
+    reached_quarters: Mapped[float | None] = mapped_column(Numeric(5, 2))
+    reached_semis: Mapped[float | None] = mapped_column(Numeric(5, 2))
+    reached_championship: Mapped[float | None] = mapped_column(Numeric(5, 2))
+    won_title: Mapped[float | None] = mapped_column(Numeric(5, 2))
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
 

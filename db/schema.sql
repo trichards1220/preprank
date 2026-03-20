@@ -168,6 +168,13 @@ CREATE TABLE IF NOT EXISTS projected_ratings (
     championship_probability DECIMAL(5,2),
     projected_wins_mean DECIMAL(4,1),
     projected_losses_mean DECIMAL(4,1),
+    -- Playoff round advancement probabilities (percentage 0-100)
+    made_playoffs DECIMAL(5,2),
+    won_round1 DECIMAL(5,2),
+    reached_quarters DECIMAL(5,2),
+    reached_semis DECIMAL(5,2),
+    reached_championship DECIMAL(5,2),
+    won_title DECIMAL(5,2),
     created_at TIMESTAMP DEFAULT NOW()
 );
 

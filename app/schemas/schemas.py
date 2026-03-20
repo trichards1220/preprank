@@ -96,6 +96,12 @@ class ProjectedRatingOut(BaseModel):
     championship_probability: float | None = None
     projected_wins_mean: float | None = None
     projected_losses_mean: float | None = None
+    made_playoffs: float | None = None
+    won_round1: float | None = None
+    reached_quarters: float | None = None
+    reached_semis: float | None = None
+    reached_championship: float | None = None
+    won_title: float | None = None
     model_config = {"from_attributes": True}
 
 class GamePredictionOut(BaseModel):
