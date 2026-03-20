@@ -334,3 +334,33 @@ class BadgeLeaderboardEntry(BaseModel):
     last_name: str | None = None
     badge_count: int
     rarest_badge: str | None = None
+
+
+# --- Subscriptions ---
+
+class SubscriptionStatusOut(BaseModel):
+    tier: str
+    plan_name: str
+    is_active: bool
+    expires_at: datetime | None = None
+    stripe_customer_id: str | None = None
+
+class CheckoutSessionOut(BaseModel):
+    session_id: str
+    url: str | None = None
+
+class BillingPortalOut(BaseModel):
+    url: str
+
+class AppleReceiptRequest(BaseModel):
+    receipt_data: str
+
+class GoogleReceiptRequest(BaseModel):
+    product_id: str
+    purchase_token: str
+    is_subscription: bool = True
+
+class ReceiptValidationOut(BaseModel):
+    valid: bool
+    tier: str
+    expires_at: datetime | None = None

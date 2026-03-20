@@ -18,6 +18,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import PickemScreen from '../screens/PickemScreen';
 import PickemLeaderboardScreen from '../screens/PickemLeaderboardScreen';
 import BadgesScreen from '../screens/BadgesScreen';
+import SubscriptionScreen from '../screens/SubscriptionScreen';
 
 const PrepRankTheme = {
   ...DefaultTheme,
@@ -92,6 +93,7 @@ function SettingsStackNav() {
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="SettingsMain" component={SettingsScreen} options={{ title: 'Settings' }} />
       <Stack.Screen name="Badges" component={BadgesScreen} options={{ title: 'Badges' }} />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ title: 'Subscription' }} />
     </Stack.Navigator>
   );
 }

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import sports, schools, teams, games, power_ratings, predictions, auth, users, webhooks, pickem, hype, badges_router
+from app.routers import sports, schools, teams, games, power_ratings, predictions, auth, users, webhooks, pickem, hype, badges_router, subscriptions
 
 app = FastAPI(
     title="PrepRank",
@@ -23,9 +23,10 @@ app.include_router(pickem.router, prefix="/api/v1")
 app.include_router(hype.router, prefix="/api/v1")
 app.include_router(badges_router.router, prefix="/api/v1")
 
-# Auth & user endpoints
+# Auth, user, and subscription endpoints
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
+app.include_router(subscriptions.router, prefix="/api/v1")
 
 # Stripe webhooks (no /api/v1 prefix — Stripe calls these directly)
 app.include_router(webhooks.router)

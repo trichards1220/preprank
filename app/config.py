@@ -12,6 +12,15 @@ class Settings(BaseSettings):
     # Stripe
     stripe_secret_key: str = ""
     stripe_webhook_secret: str = ""
+    stripe_price_premium_monthly: str = ""
+    stripe_price_season_pass: str = ""
+    stripe_price_annual: str = ""
+    # Apple IAP
+    apple_shared_secret: str = ""
+    apple_verify_url: str = "https://buy.itunes.apple.com/verifyReceipt"
+    apple_sandbox_url: str = "https://sandbox.itunes.apple.com/verifyReceipt"
+    # Google Play
+    google_play_credentials_json: str = ""  # path to service account JSON
 
     model_config = {"env_file": ".env"}
 

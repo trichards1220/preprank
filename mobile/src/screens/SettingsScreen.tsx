@@ -78,7 +78,7 @@ export default function SettingsScreen({ navigation }: any) {
             })}
           </Text>
         )}
-        <TouchableOpacity style={styles.manageButton}>
+        <TouchableOpacity style={styles.manageButton} onPress={() => navigation.navigate('Subscription')}>
           <Text style={styles.manageButtonText}>Manage Subscription</Text>
         </TouchableOpacity>
       </View>
