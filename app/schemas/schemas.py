@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 # --- Schools ---
@@ -121,4 +121,58 @@ class GameImpactOut(BaseModel):
     rank_if_away_wins: int | None = None
     playoff_prob_if_home_wins: float | None = None
     playoff_prob_if_away_wins: float | None = None
+    model_config = {"from_attributes": True}
+
+
+# --- Users / Auth ---
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+    first_name: str | None = None
+    last_name: str | None = None
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+    first_name: str | None = None
+    last_name: str | None = None
+    subscription_tier: str
+    subscription_expires: datetime | None = None
+    created_at: datetime | None = None
+    model_config = {"from_attributes": True}
+
+class TokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+# --- Favorites ---
+
+class FavoriteCreate(BaseModel):
+    entity_type: str  # team, athlete, school
+    entity_id: int
+
+class FavoriteOut(BaseModel):
+    id: int
+    entity_type: str
+    entity_id: int
+    created_at: datetime | None = None
+    model_config = {"from_attributes": True}
+
+
+# --- Notifications ---
+
+class NotificationOut(BaseModel):
+    id: int
+    notification_type: str
+    title: str | None = None
+    message: str | None = None
+    game_id: int | None = None
+    read_status: bool
+    sent_at: datetime | None = None
     model_config = {"from_attributes": True}

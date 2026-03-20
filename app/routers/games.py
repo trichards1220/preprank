@@ -4,7 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
 from app.models.games import Game
-from app.schemas.schemas import GameBase, GameOut
+from app.models.predictions import GameImpactAnalysis
+from app.models.users import User
+from app.auth import require_premium
+from app.schemas.schemas import GameBase, GameOut, GameImpactOut
 
 router = APIRouter(prefix="/games", tags=["games"])
 
@@ -49,3 +52,26 @@ async def get_game(game_id: int, db: AsyncSession = Depends(get_db)):
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
     return game
+
+
+@router.get("/{game_id}/impact-analysis", response_model=list[GameImpactOut])
+async def get_game_impact_analysis(
+    game_id: int,
+    simulation_id: int | None = None,
+    user: User = Depends(require_premium),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get impact analysis for a game — how each outcome affects team ratings. Premium only.
+
+    Shows for each affected team: projected rating if home wins vs away wins,
+    projected rank in each scenario, and playoff probability in each scenario.
+    """
+    result = await db.execute(select(Game).where(Game.id == game_id))
+    if not result.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Game not found")
+
+    query = select(GameImpactAnalysis).where(GameImpactAnalysis.game_id == game_id)
+    if simulation_id:
+        query = query.where(GameImpactAnalysis.simulation_id == simulation_id)
+    result = await db.execute(query)
+    return result.scalars().all()
