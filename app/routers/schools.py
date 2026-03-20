@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,12 +12,18 @@ router = APIRouter(prefix="/schools", tags=["schools"])
 @router.get("/", response_model=list[SchoolOut])
 async def list_schools(
     classification: str | None = None,
+    division: str | None = None,
+    select_status: str | None = None,
     parish: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     query = select(School)
     if classification:
         query = query.where(School.classification == classification)
+    if division:
+        query = query.where(School.division == division)
+    if select_status:
+        query = query.where(School.select_status == select_status)
     if parish:
         query = query.where(School.parish == parish)
     result = await db.execute(query)
@@ -29,6 +35,5 @@ async def get_school(school_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(School).where(School.id == school_id))
     school = result.scalar_one_or_none()
     if not school:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="School not found")
     return school

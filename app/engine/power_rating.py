@@ -22,6 +22,24 @@ from dataclasses import dataclass, field
 
 
 # ---------------------------------------------------------------------------
+# Division / Classification mappings
+# ---------------------------------------------------------------------------
+
+_DIVISION_ORDER = {"I": 1, "II": 2, "III": 3, "IV": 4}
+_CLASS_ORDER = {"1A": 1, "2A": 2, "3A": 3, "4A": 4, "5A": 5}
+
+
+def division_rank(div: str) -> int:
+    """Convert roman numeral division to numeric rank. Higher = larger schools."""
+    return _DIVISION_ORDER.get(div.upper().strip(), 0)
+
+
+def classification_rank(cls: str) -> int:
+    """Convert classification string to numeric rank. Higher = larger schools."""
+    return _CLASS_ORDER.get(cls.upper().strip(), 0)
+
+
+# ---------------------------------------------------------------------------
 # Data structures
 # ---------------------------------------------------------------------------
 
@@ -29,8 +47,8 @@ from dataclasses import dataclass, field
 class TeamRecord:
     team_id: int
     classification: str  # "1A" .. "5A"
-    division: int  # playoff division (1, 2, 3 …)
-    select: bool = False
+    division: str  # "I", "II", "III", "IV"
+    select_status: str = "Non-Select"  # "Select" or "Non-Select"
     wins: int = 0
     losses: int = 0
 
@@ -41,23 +59,17 @@ class TeamRecord:
 
 @dataclass
 class GameResult:
+    """A single game from one team's perspective."""
     team_id: int
     opponent_id: int
     won: bool
-    opponent_division: int
-    opponent_classification: str
-
-
-@dataclass
-class PowerRatingResult:
-    team_id: int
-    power_rating: float
-    strength_factor: float
-    game_details: list[GamePowerPoints] = field(default_factory=list)
+    opponent_division: str  # "I", "II", "III", "IV"
+    opponent_classification: str  # "1A" .. "5A"
 
 
 @dataclass
 class GamePowerPoints:
+    """Breakdown of power points earned in a single game."""
     opponent_id: int
     result_points: float
     play_up_points: float
@@ -68,15 +80,12 @@ class GamePowerPoints:
         return self.result_points + self.play_up_points + self.opponent_wins_points
 
 
-# ---------------------------------------------------------------------------
-# Classification helpers
-# ---------------------------------------------------------------------------
-
-_CLASS_ORDER = {"1A": 1, "2A": 2, "3A": 3, "4A": 4, "5A": 5}
-
-
-def classification_rank(cls: str) -> int:
-    return _CLASS_ORDER.get(cls.upper(), 0)
+@dataclass
+class PowerRatingResult:
+    team_id: int
+    power_rating: float
+    strength_factor: float
+    game_details: list[GamePowerPoints] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -84,22 +93,49 @@ def classification_rank(cls: str) -> int:
 # ---------------------------------------------------------------------------
 
 def calculate_play_up_points(
-    team_division: int,
+    team_division: str,
     team_classification: str,
-    opponent_division: int,
+    opponent_division: str,
     opponent_classification: str,
 ) -> float:
-    """Return +2 for each level the opponent is above the team in division & class."""
-    div_diff = opponent_division - team_division
+    """Return +2 for each level the opponent is above the team in division & class.
+
+    Per LHSAA rules (April 2023 change): play-up bonus is based on playoff
+    division, not classification. The bonus is +2 per combined division + class
+    level the opponent exceeds the team.
+    """
+    div_diff = division_rank(opponent_division) - division_rank(team_division)
     class_diff = classification_rank(opponent_classification) - classification_rank(team_classification)
     levels_above = max(div_diff + class_diff, 0)
     return levels_above * 2.0
 
 
 def calculate_opponent_wins_points(opponent_wins: int, opponent_games: int) -> float:
+    """Calculate opponent wins component: (opponent wins / opponent total games) * 10."""
     if opponent_games == 0:
         return 0.0
     return (opponent_wins / opponent_games) * 10.0
+
+
+def calculate_strength_factor(
+    games: list[GameResult],
+    records: dict[int, TeamRecord],
+) -> float:
+    """Calculate tiebreaker strength factor.
+
+    Formula: (Sum of opponents' classification rank + Sum of opponents' wins) / games played
+    """
+    if not games:
+        return 0.0
+
+    opponent_class_sum = 0
+    opponent_wins_sum = 0
+    for g in games:
+        opp = records[g.opponent_id]
+        opponent_class_sum += classification_rank(opp.classification)
+        opponent_wins_sum += opp.wins
+
+    return round((opponent_class_sum + opponent_wins_sum) / len(games), 2)
 
 
 def calculate_power_rating(
@@ -111,9 +147,9 @@ def calculate_power_rating(
 
     Args:
         team: The team being rated.
-        games: List of games the team has played.
-        records: Mapping of team_id -> TeamRecord for all teams (used to look up
-                 current opponent win totals, which change retroactively).
+        games: List of games the team has played (from their perspective).
+        records: Mapping of team_id -> TeamRecord for all teams. Used to look up
+                 current opponent win totals, which recalculate retroactively.
 
     Returns:
         PowerRatingResult with the calculated rating and per-game breakdown.
@@ -122,8 +158,6 @@ def calculate_power_rating(
         return PowerRatingResult(team_id=team.team_id, power_rating=0.0, strength_factor=0.0)
 
     game_points: list[GamePowerPoints] = []
-    opponent_class_sum = 0
-    opponent_wins_sum = 0
 
     for g in games:
         opp = records[g.opponent_id]
@@ -142,18 +176,38 @@ def calculate_power_rating(
             opponent_wins_points=opp_wins_pts,
         ))
 
-        opponent_class_sum += classification_rank(opp.classification)
-        opponent_wins_sum += opp.wins
-
     total_power = sum(gp.total for gp in game_points)
     num_games = len(games)
     power_rating = round(total_power / num_games, 2)
-
-    strength_factor = round((opponent_class_sum + opponent_wins_sum) / num_games, 2)
+    strength = calculate_strength_factor(games, records)
 
     return PowerRatingResult(
         team_id=team.team_id,
         power_rating=power_rating,
-        strength_factor=strength_factor,
+        strength_factor=strength,
         game_details=game_points,
     )
+
+
+def calculate_all_power_ratings(
+    all_records: dict[int, TeamRecord],
+    all_games: dict[int, list[GameResult]],
+) -> dict[int, PowerRatingResult]:
+    """Calculate power ratings for every team in the league.
+
+    Because opponent wins points are retroactive (they depend on the opponent's
+    current record, not their record at game time), this function computes all
+    ratings in a single pass using the current state of all records.
+
+    Args:
+        all_records: team_id -> TeamRecord for every team.
+        all_games: team_id -> list of GameResults for every team.
+
+    Returns:
+        team_id -> PowerRatingResult for every team.
+    """
+    results = {}
+    for team_id, team in all_records.items():
+        games = all_games.get(team_id, [])
+        results[team_id] = calculate_power_rating(team, games, all_records)
+    return results

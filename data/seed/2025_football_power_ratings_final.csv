@@ -1,0 +1,299 @@
+rank,school,power_rating,strength_factor,wins,losses,district,division,select_status,season_year
+1,Ruston,14.40,11.40,8,2,2,I,Non-Select,2025
+2,Neville,14.20,11.60,7,3,2,I,Non-Select,2025
+3,Destrehan,14.00,11.00,8,2,8,I,Non-Select,2025
+4,Denham Springs,13.39,9.90,8,2,5,I,Non-Select,2025
+5,Central - B.R.,13.32,9.60,8,2,4,I,Non-Select,2025
+6,Parkway,13.24,8.90,9,1,1,I,Non-Select,2025
+7,Northwood - Shrev.,13.16,9.00,8,2,1,I,Non-Select,2025
+8,Southside,13.10,9.50,8,2,3,I,Non-Select,2025
+9,Terrebonne,13.09,10.20,7,3,8,I,Non-Select,2025
+10,West Monroe,12.80,10.40,7,3,2,I,Non-Select,2025
+11,Hahnville,12.60,9.10,8,2,8,I,Non-Select,2025
+12,East Ascension,12.49,10.30,7,3,5,I,Non-Select,2025
+13,Zachary,12.48,10.56,6,3,4,I,Non-Select,2025
+14,Ouachita Parish,12.40,10.70,6,4,2,I,Non-Select,2025
+15,Thibodaux,12.40,8.90,8,2,8,I,Non-Select,2025
+16,Westgate,11.90,9.60,6,4,4,I,Non-Select,2025
+17,Airline,11.80,9.50,7,3,1,I,Non-Select,2025
+18,Mandeville,11.47,10.10,6,4,6,I,Non-Select,2025
+19,St. Amant,11.45,9.00,7,3,5,I,Non-Select,2025
+20,Salmen,11.21,9.90,6,4,7,I,Non-Select,2025
+21,West Ouachita,11.18,8.30,6,4,2,I,Non-Select,2025
+22,Slidell,10.90,9.60,6,4,7,I,Non-Select,2025
+23,South Lafourche,10.74,8.90,6,4,8,I,Non-Select,2025
+24,Natchitoches Central,10.53,9.30,6,4,1,I,Non-Select,2025
+25,Prairieville,10.38,9.00,5,5,5,I,Non-Select,2025
+26,Barbe,10.30,9.90,5,5,3,I,Non-Select,2025
+27,Covington,10.21,8.70,6,4,6,I,Non-Select,2025
+28,Dutchtown,10.15,9.11,5,4,5,I,Non-Select,2025
+29,Chalmette,9.94,8.50,6,4,7,I,Non-Select,2025
+30,H.L. Bourgeois,9.90,8.80,5,5,8,I,Non-Select,2025
+31,Northshore,9.38,11.10,3,7,7,I,Non-Select,2025
+32,Live Oak,9.17,10.44,3,6,5,I,Non-Select,2025
+33,Sam Houston,8.60,10.40,3,7,3,I,Non-Select,2025
+34,East St. John,7.87,11.50,1,9,8,I,Non-Select,2025
+35,Benton,7.60,10.40,2,8,1,I,Non-Select,2025
+36,Central Lafourche,7.50,9.90,2,8,8,I,Non-Select,2025
+37,Fontainebleau,7.12,9.50,2,8,7,I,Non-Select,2025
+38,Sulphur,7.10,9.70,2,8,3,I,Non-Select,2025
+39,Haughton,7.00,9.50,2,8,1,I,Non-Select,2025
+40,Walker,6.59,10.40,1,9,5,I,Non-Select,2025
+41,New Iberia,4.80,9.70,0,10,3,I,Non-Select,2025
+1,North DeSoto,15.63,9.30,10,0,1,II,Non-Select,2025
+2,Iowa,14.30,7.90,10,0,3,II,Non-Select,2025
+3,Belle Chasse,14.18,8.40,9,1,9,II,Non-Select,2025
+4,Lakeshore,14.01,9.20,8,2,7,II,Non-Select,2025
+5,Plaquemine,13.87,8.60,9,1,6,II,Non-Select,2025
+6,Brusly,13.70,8.50,9,1,6,II,Non-Select,2025
+7,Franklin Parish,13.24,8.40,8,2,2,II,Non-Select,2025
+8,Franklinton,12.84,9.20,7,3,7,II,Non-Select,2025
+9,Jennings,12.50,8.60,7,3,3,II,Non-Select,2025
+10,Lutcher,11.80,9.60,6,4,8,II,Non-Select,2025
+11,West Feliciana,11.60,9.40,6,4,6,II,Non-Select,2025
+12,Minden,10.93,9.40,5,5,1,II,Non-Select,2025
+13,Cecilia,10.72,8.56,5,4,5,II,Non-Select,2025
+14,Pearl River,10.44,9.22,4,5,7,II,Non-Select,2025
+15,Northwest,10.40,7.60,6,4,4,II,Non-Select,2025
+16,DeRidder,10.20,8.60,5,5,3,II,Non-Select,2025
+17,Eunice,10.10,9.40,4,6,3,II,Non-Select,2025
+18,South Terrebonne,9.92,8.30,5,5,8,II,Non-Select,2025
+19,Opelousas,9.82,9.89,3,6,5,II,Non-Select,2025
+20,Carroll,9.79,7.67,4,5,1,II,Non-Select,2025
+21,Wossman,9.62,9.10,4,6,2,II,Non-Select,2025
+22,Bossier,9.47,8.60,4,6,1,II,Non-Select,2025
+23,Iota,9.40,8.10,4,6,4,II,Non-Select,2025
+24,St. Martinville,9.36,9.20,3,7,5,II,Non-Select,2025
+25,Rayne,9.01,8.70,4,6,4,II,Non-Select,2025
+26,Abbeville,8.70,8.60,3,7,5,II,Non-Select,2025
+27,Albany,8.41,6.90,4,6,8,II,Non-Select,2025
+28,Livonia,8.40,7.20,4,6,5,II,Non-Select,2025
+29,Broadmoor,8.20,8.90,3,7,6,II,Non-Select,2025
+30,Assumption,8.10,9.80,2,8,8,II,Non-Select,2025
+31,A.J. Ellender,8.00,8.60,3,7,8,II,Non-Select,2025
+32,Woodlawn - Shrev.,7.93,9.30,2,8,1,II,Non-Select,2025
+33,Breaux Bridge,7.67,7.70,3,7,5,II,Non-Select,2025
+34,Grant,7.52,7.70,3,7,2,II,Non-Select,2025
+35,South Beauregard,7.20,8.10,2,8,3,II,Non-Select,2025
+36,North Vermilion,7.00,10.40,0,10,4,II,Non-Select,2025
+37,Morgan City,6.40,8.80,1,9,8,II,Non-Select,2025
+38,Bastrop,6.06,7.50,1,9,1,II,Non-Select,2025
+39,LaGrange,5.52,8.00,1,9,3,II,Non-Select,2025
+40,Beau Chene,5.21,7.00,1,8,5,II,Non-Select,2025
+1,Jena,15.00,8.20,9,1,2,III,Non-Select,2025
+2,Sterlington,14.80,8.50,8,2,1,III,Non-Select,2025
+3,St. James,14.64,8.30,8,2,7,III,Non-Select,2025
+4,Kinder,14.30,6.00,10,0,5,III,Non-Select,2025
+5,Erath,14.20,6.60,10,0,5,III,Non-Select,2025
+6,Oak Grove,13.33,7.40,8,2,2,III,Non-Select,2025
+7,Loreauville,13.24,8.10,7,3,7,III,Non-Select,2025
+8,Mansfield,13.20,6.90,8,2,3,III,Non-Select,2025
+9,Marksville,12.80,7.50,8,2,2,III,Non-Select,2025
+10,Church Point,12.20,6.90,8,2,4,III,Non-Select,2025
+11,Richwood,12.05,8.44,5,4,1,III,Non-Select,2025
+12,Union Parish,11.70,8.60,5,5,1,III,Non-Select,2025
+13,Pine,11.36,6.70,7,3,8,III,Non-Select,2025
+14,Many,11.30,8.10,5,5,3,III,Non-Select,2025
+15,Donaldsonville,11.24,6.30,7,3,7,III,Non-Select,2025
+16,Avoyelles,11.20,7.00,6,4,5,III,Non-Select,2025
+17,St. Helena College & Career Acad.,11.07,7.56,5,4,9,III,Non-Select,2025
+18,Westlake,10.90,7.50,6,4,3,III,Non-Select,2025
+19,Red River,10.90,6.50,6,4,3,III,Non-Select,2025
+20,Kaplan,10.80,7.10,6,4,5,III,Non-Select,2025
+21,Rayville,10.59,7.40,5,5,2,III,Non-Select,2025
+22,Caldwell Parish,10.20,9.50,3,7,2,III,Non-Select,2025
+23,North Webster,9.40,7.50,4,6,1,III,Non-Select,2025
+24,Patterson,9.24,9.20,2,8,7,III,Non-Select,2025
+25,Winnfield,9.20,8.20,3,7,3,III,Non-Select,2025
+26,Ville Platte,9.20,7.70,4,6,4,III,Non-Select,2025
+27,Port Allen,9.10,8.80,3,7,6,III,Non-Select,2025
+28,Bogalusa,8.64,9.67,1,8,8,III,Non-Select,2025
+29,Port Barre,8.51,7.40,3,7,5,III,Non-Select,2025
+30,Mamou,8.20,6.80,4,6,4,III,Non-Select,2025
+31,Lakeside,8.20,5.60,4,6,3,III,Non-Select,2025
+32,Green Oaks,7.90,6.80,3,7,1,III,Non-Select,2025
+33,Baker,7.60,6.80,3,7,8,III,Non-Select,2025
+34,Vidalia,7.27,7.40,2,8,2,III,Non-Select,2025
+35,Springfield,7.11,7.40,2,8,8,III,Non-Select,2025
+36,Madison,6.89,7.50,1,9,2,III,Non-Select,2025
+37,Crowley,6.52,7.00,2,8,4,III,Non-Select,2025
+38,Oakdale,6.20,8.10,0,10,5,III,Non-Select,2025
+39,Berwick,6.18,7.30,1,9,7,III,Non-Select,2025
+40,Pine Prairie,5.50,7.80,0,10,4,III,Non-Select,2025
+1,Haynesville,14.63,5.70,10,0,1,IV,Non-Select,2025
+2,Mangham,13.99,7.60,8,2,2,IV,Non-Select,2025
+3,South Plaquemines,13.98,6.67,7,2,10,IV,Non-Select,2025
+4,Jeanerette,13.67,5.50,9,1,7,IV,Non-Select,2025
+5,Logansport,13.47,7.00,7,3,3,IV,Non-Select,2025
+6,North Iberville,13.35,6.10,8,2,8,IV,Non-Select,2025
+7,East Feliciana,12.76,7.20,7,3,8,IV,Non-Select,2025
+8,Vinton,12.54,5.90,8,2,4,IV,Non-Select,2025
+9,Jonesboro-Hodge,12.13,5.90,7,3,1,IV,Non-Select,2025
+10,Ferriday,11.80,6.40,7,3,2,IV,Non-Select,2025
+11,Elton,11.44,5.30,7,3,4,IV,Non-Select,2025
+12,Welsh,11.30,8.30,4,6,6,IV,Non-Select,2025
+13,Grand Lake,11.24,5.10,7,3,4,IV,Non-Select,2025
+14,West St. Mary,11.16,5.60,7,3,7,IV,Non-Select,2025
+15,West St. John,10.77,6.67,4,5,10,IV,Non-Select,2025
+16,Homer,10.70,7.00,5,5,1,IV,Non-Select,2025
+17,Franklin,10.67,7.56,4,5,7,IV,Non-Select,2025
+18,General Trass,10.57,5.33,5,4,2,IV,Non-Select,2025
+19,Basile,10.22,6.20,5,5,4,IV,Non-Select,2025
+20,Montgomery,10.20,6.10,5,5,3,IV,Non-Select,2025
+21,Lake Arthur,10.06,6.50,5,5,6,IV,Non-Select,2025
+22,LaSalle,9.87,4.80,6,4,3,IV,Non-Select,2025
+23,Northeast,9.51,5.90,5,5,8,IV,Non-Select,2025
+24,North Central,9.50,5.50,5,5,5,IV,Non-Select,2025
+25,DeQuincy,9.44,6.70,4,6,4,IV,Non-Select,2025
+26,Delcambre,9.36,5.80,5,5,7,IV,Non-Select,2025
+27,Arcadia,8.91,6.20,3,7,1,IV,Non-Select,2025
+28,Varnado,7.94,6.50,2,8,10,IV,Non-Select,2025
+29,East Iberville,7.74,6.50,2,8,8,IV,Non-Select,2025
+30,Merryville,7.72,6.80,2,8,4,IV,Non-Select,2025
+31,Oberlin,7.69,6.44,2,7,4,IV,Non-Select,2025
+32,Centerville,7.52,6.60,2,8,7,IV,Non-Select,2025
+33,White Castle,7.20,7.90,0,10,8,IV,Non-Select,2025
+34,East Beauregard,6.91,5.78,2,7,4,IV,Non-Select,2025
+35,Delhi,6.76,6.60,1,9,2,IV,Non-Select,2025
+36,Lakeview,5.90,6.70,0,10,3,IV,Non-Select,2025
+37,Plain Dealing,5.48,6.44,0,9,1,IV,Non-Select,2025
+38,Gueydan,5.31,5.40,1,9,6,IV,Non-Select,2025
+1,Edna Karr,15.82,10.50,10,0,9,I,Select,2025
+2,Teurlings Catholic,14.83,8.80,10,0,2,I,Select,2025
+3,St. Augustine,14.58,10.10,9,1,3,I,Select,2025
+4,Catholic - B.R.,14.47,10.90,8,1,4,I,Select,2025
+5,Alexandria,13.93,10.10,8,2,9,I,Select,2025
+6,Tioga,13.48,9.20,8,1,4,I,Select,2025
+7,John Curtis Christian,13.44,10.44,7,2,6,I,Select,2025
+8,Evangel Christian,13.30,10.00,8,3,4,I,Select,2025
+9,St. Paul's,13.13,9.50,8,4,9,I,Select,2025
+10,St. Thomas More,12.80,10.20,7,3,1,I,Select,2025
+11,Archbishop Rummel,12.78,11.10,6,4,9,I,Select,2025
+12,Brother Martin,12.68,11.50,6,3,10,I,Select,2025
+13,Hammond,12.30,10.10,7,3,10,I,Select,2025
+14,Acadiana,12.17,10.00,7,4,9,I,Select,2025
+15,Riverdale,11.97,7.40,8,4,1,I,Select,2025
+16,McDonogh #35,11.63,8.50,7,4,6,I,Select,2025
+17,Jesuit,11.48,11.30,5,5,1,I,Select,2025
+18,Bonnabel,11.43,9.00,7,5,1,I,Select,2025
+19,Carencro,11.37,9.90,6,5,9,I,Select,2025
+20,Captain Shreve,11.30,10.30,6,5,10,I,Select,2025
+21,Liberty,10.68,8.50,6,4,10,I,Select,2025
+22,Holy Cross,10.38,11.00,4,5,3,I,Select,2025
+23,Lafayette,10.24,8.50,6,6,4,I,Select,2025
+24,Pineville,10.10,10.30,4,6,3,I,Select,2025
+25,Comeaux,9.70,8.60,5,7,9,I,Select,2025
+26,Woodlawn - B.R.,9.57,10.00,4,6,2,I,Select,2025
+27,Warren Easton,9.48,11.00,3,7,2,I,Select,2025
+28,John Ehret,8.82,9.30,4,6,10,I,Select,2025
+29,Huntington,8.80,10.50,3,7,4,I,Select,2025
+30,Southwood,8.67,8.78,3,8,6,I,Select,2025
+31,L. W. Higgins,7.67,8.90,3,7,9,I,Select,2025
+32,C.E. Byrd,7.40,10.40,2,8,4,I,Select,2025
+33,Scotlandville,7.37,10.90,1,7,10,I,Select,2025
+34,Ponchatoula,7.29,9.70,2,8,10,I,Select,2025
+35,West Jefferson,7.22,9.56,2,10,4,I,Select,2025
+36,East Jefferson,5.98,10.10,0,9,1,I,Select,2025
+1,St. Charles,15.85,9.80,9,1,9,II,Select,2025
+2,Loyola Prep,14.63,8.70,9,1,1,II,Select,2025
+3,Lake Charles College Prep,13.83,8.50,8,2,3,II,Select,2025
+4,University Lab,13.70,8.70,8,2,6,II,Select,2025
+5,Madison Prep,13.46,8.20,8,2,6,II,Select,2025
+6,Vandebilt Catholic,13.40,8.10,9,1,8,II,Select,2025
+7,Archbishop Shaw,13.02,10.20,6,4,9,II,Select,2025
+8,E.D. White,12.50,9.20,7,3,8,II,Select,2025
+9,St. Michael the Archangel,11.70,8.40,7,3,6,II,Select,2025
+10,Haynes Academy,11.21,7.60,6,4,9,II,Select,2025
+11,George Washington Carver,10.95,7.67,6,3,10,II,Select,2025
+12,John F. Kennedy,10.71,7.70,6,4,10,II,Select,2025
+13,Booker T. Washington - Shr.,10.53,7.90,6,4,1,II,Select,2025
+14,Leesville,10.10,8.60,5,5,3,II,Select,2025
+15,Patrick Taylor - Science/Tech.,10.07,7.60,5,5,9,II,Select,2025
+16,Lord Beaconsfield Landry,9.91,7.90,5,5,10,II,Select,2025
+17,Northside,9.86,8.60,5,5,4,II,Select,2025
+18,Belaire,9.70,8.40,5,5,6,II,Select,2025
+19,Kenner Discovery Health Science,9.62,8.70,4,6,9,II,Select,2025
+20,Istrouma,9.60,8.40,5,5,6,II,Select,2025
+21,Frederick A Douglass,9.54,6.67,5,4,10,II,Select,2025
+22,Livingston Collegiate,9.16,7.90,4,6,10,II,Select,2025
+23,Abramson,9.10,5.90,6,4,10,II,Select,2025
+24,Loranger,9.00,7.70,4,6,7,II,Select,2025
+25,Buckeye,8.80,7.50,4,6,2,II,Select,2025
+26,Archbishop Hannan,8.73,8.10,3,7,7,II,Select,2025
+27,Helix Mentorship Academy,7.40,6.10,4,6,6,II,Select,2025
+28,Peabody,7.22,8.89,2,7,2,II,Select,2025
+29,Washington-Marion,7.02,7.60,3,7,3,II,Select,2025
+30,Eleanor McMain,6.95,10.10,0,10,10,II,Select,2025
+31,McKinley,6.70,8.40,2,8,6,II,Select,2025
+32,Sophie B. Wright,6.64,8.44,1,8,10,II,Select,2025
+33,Booker T. Washington - N.O.,6.18,9.10,0,10,10,II,Select,2025
+34,Tara,5.30,9.00,0,10,6,II,Select,2025
+1,Lafayette Christian,17.70,10.10,9,1,6,III,Select,2025
+2,Notre Dame,16.06,9.70,8,2,6,III,Select,2025
+3,Jewel Sumner,15.37,7.70,10,0,8,III,Select,2025
+4,Isidore Newman,14.83,8.75,6,2,10,III,Select,2025
+5,Dunham,14.83,7.70,9,1,8,III,Select,2025
+6,Calvary Baptist,14.60,7.40,9,1,1,III,Select,2025
+7,Lafayette Renaissance Charter Academy,14.31,8.00,8,2,6,III,Select,2025
+8,Bunkie,13.50,6.90,9,1,2,III,Select,2025
+9,Catholic - N.I.,13.14,6.90,8,2,7,III,Select,2025
+10,Amite,12.77,8.00,7,3,8,III,Select,2025
+11,Metairie Park Country Day,11.58,7.10,6,4,10,III,Select,2025
+12,Northlake Christian,11.51,6.78,6,3,9,III,Select,2025
+13,Holy Savior Menard,11.40,7.20,6,4,5,III,Select,2025
+14,Slaughter Community Charter,11.20,6.10,7,3,8,III,Select,2025
+15,Episcopal,11.07,7.90,5,5,8,III,Select,2025
+16,Parkview Baptist,10.90,8.50,5,5,6,III,Select,2025
+17,D'Arbonne Woods Charter,10.90,6.60,6,4,1,III,Select,2025
+18,De La Salle,10.71,8.90,4,6,10,III,Select,2025
+19,Pope John Paul II,10.62,7.00,5,5,9,III,Select,2025
+20,Thomas Jefferson,9.58,6.11,5,4,9,III,Select,2025
+21,St. Louis Catholic,8.90,9.30,2,8,3,III,Select,2025
+22,Beekman Charter,8.56,7.00,3,6,2,III,Select,2025
+23,Walter L. Cohen,8.16,7.44,2,7,10,III,Select,2025
+24,Glen Oaks,8.00,7.40,3,7,6,III,Select,2025
+25,Independence,7.52,7.30,2,8,9,III,Select,2025
+26,Rosepine,7.22,8.10,1,9,4,III,Select,2025
+27,Sarah T. Reed,7.14,7.80,1,9,10,III,Select,2025
+28,Houma Christian,6.44,7.00,1,9,7,III,Select,2025
+29,North Caddo,6.33,7.20,1,9,1,III,Select,2025
+30,St. Thomas Aquinas,6.31,7.90,0,10,9,III,Select,2025
+31,Jefferson Rise Charter,6.26,7.60,1,9,9,III,Select,2025
+32,Collegiate Baton Rouge,6.16,8.60,0,10,6,III,Select,2025
+33,Fisher,6.13,7.20,1,9,9,III,Select,2025
+34,Capitol,5.40,7.20,0,10,8,III,Select,2025
+35,Magnolia School of Excellence,4.59,6.22,0,9,1,III,Select,2025
+1,Westminster Christian,15.40,6.30,10,0,5,IV,Select,2025
+2,Riverside Academy,14.99,6.22,8,1,10,IV,Select,2025
+3,Hamilton Christian,14.69,5.89,9,0,4,IV,Select,2025
+4,Catholic - P.C.,14.40,7.10,8,2,5,IV,Select,2025
+5,Ascension Catholic,14.30,6.70,8,2,8,IV,Select,2025
+6,Ascension Episcopal,14.00,5.40,9,1,6,IV,Select,2025
+7,Ouachita Christian,13.69,6.30,9,1,2,IV,Select,2025
+8,Covenant Christian,13.58,6.30,8,2,7,IV,Select,2025
+9,St. Edmund,13.52,6.20,8,2,5,IV,Select,2025
+10,Southern Lab,13.16,7.30,6,4,9,IV,Select,2025
+11,Kentwood,12.82,7.40,6,4,9,IV,Select,2025
+12,St. John,12.82,6.50,7,3,8,IV,Select,2025
+13,Sacred Heart,12.10,5.80,7,3,5,IV,Select,2025
+14,St. Frederick,11.92,7.40,5,5,2,IV,Select,2025
+15,St. Martin's Episcopal,11.88,6.20,6,4,10,IV,Select,2025
+16,Opelousas Catholic,11.82,6.60,6,4,5,IV,Select,2025
+17,Ascension Christian,11.78,6.50,6,4,8,IV,Select,2025
+18,Delta Charter,11.28,5.67,6,3,2,IV,Select,2025
+19,Cedar Creek,11.10,6.00,6,4,1,IV,Select,2025
+20,Westminster Christian - Lafayette,10.93,5.90,6,4,6,IV,Select,2025
+21,St. Mary's,10.90,6.60,5,5,3,IV,Select,2025
+22,Vermilion Catholic,10.89,7.50,4,6,6,IV,Select,2025
+23,Central Catholic,10.01,7.40,3,7,7,IV,Select,2025
+24,Lincoln Preparatory School,9.87,5.50,5,5,1,IV,Select,2025
+25,Central Private,9.16,5.90,4,6,9,IV,Select,2025
+26,Delhi Charter,8.53,7.20,3,7,2,IV,Select,2025
+27,Glenbrook,8.33,5.78,3,6,1,IV,Select,2025
+28,Hanson Memorial,7.56,6.22,2,7,7,IV,Select,2025
+29,Berchmans Academy,7.11,7.20,1,9,5,IV,Select,2025
+30,Northwood - Lena,7.10,6.00,2,8,3,IV,Select,2025
+31,Crescent City,7.07,7.43,0,7,10,IV,Select,2025
+32,Thrive Academy,5.56,5.67,1,8,9,IV,Select,2025
+33,Block,5.22,6.00,0,10,2,IV,Select,2025
+34,Highland Baptist,4.62,5.50,0,10,6,IV,Select,2025

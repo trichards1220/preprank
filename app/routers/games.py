@@ -12,6 +12,7 @@ router = APIRouter(prefix="/games", tags=["games"])
 @router.get("/", response_model=list[GameOut])
 async def list_games(
     sport_id: int | None = None,
+    season_year: int | None = None,
     week_number: int | None = None,
     team_id: int | None = None,
     status: str | None = None,
@@ -20,6 +21,8 @@ async def list_games(
     query = select(Game)
     if sport_id:
         query = query.where(Game.sport_id == sport_id)
+    if season_year:
+        query = query.where(Game.season_year == season_year)
     if week_number:
         query = query.where(Game.week_number == week_number)
     if team_id:

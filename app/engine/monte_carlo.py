@@ -6,6 +6,9 @@ Approach:
 3. Simulate the rest of the season N times (default 10,000).
 4. Each simulation produces complete final records and power ratings.
 5. Aggregate across simulations for probability distributions.
+
+Key: playoff brackets are separated by division AND select_status.
+Division I Select and Division I Non-Select are distinct brackets.
 """
 
 from __future__ import annotations
@@ -26,9 +29,9 @@ class ScheduledGame:
     game_id: int
     home_team_id: int
     away_team_id: int
-    home_division: int
+    home_division: str  # "I", "II", "III", "IV"
     home_classification: str
-    away_division: int
+    away_division: str
     away_classification: str
 
 
@@ -36,18 +39,14 @@ class ScheduledGame:
 class TeamProjection:
     team_id: int
     projected_rating_mean: float
+    projected_rating_median: float
     projected_rating_p10: float
     projected_rating_p90: float
+    projected_rank_mean: float
     playoff_probability: float
-
-
-@dataclass
-class GameImpact:
-    game_id: int
-    home_win_probability: float
-    # Impact on home team's projected rating if home wins vs loses
-    home_win_rating_delta: float
-    home_loss_rating_delta: float
+    championship_probability: float
+    projected_wins_mean: float
+    projected_losses_mean: float
 
 
 def estimate_win_probability(home_rating: float, away_rating: float) -> float:
@@ -57,8 +56,14 @@ def estimate_win_probability(home_rating: float, away_rating: float) -> float:
     This is a Tier 1 model — wins/losses and power ratings only.
     """
     diff = home_rating - away_rating
-    home_advantage = 0.5  # slight edge for home team
+    home_advantage = 0.5
     return 1.0 / (1.0 + np.exp(-(diff + home_advantage) / 3.0))
+
+
+def _bracket_key(record: TeamRecord) -> str:
+    """Generate a bracket key from division + select_status.
+    Division I Select and Division I Non-Select are separate brackets."""
+    return f"{record.division}_{record.select_status}"
 
 
 def simulate_season(
@@ -78,7 +83,7 @@ def simulate_season(
         records: current TeamRecord for every team.
         current_ratings: current power rating per team.
         num_simulations: number of Monte Carlo iterations.
-        playoff_cutoff: top N teams per division make playoffs.
+        playoff_cutoff: top N teams per bracket make playoffs.
         rng_seed: optional seed for reproducibility.
 
     Returns:
@@ -94,8 +99,10 @@ def simulate_season(
         ar = current_ratings.get(game.away_team_id, 0.0)
         win_probs.append(estimate_win_probability(hr, ar))
 
-    # Storage for final ratings across simulations
+    # Storage for results across simulations
     all_ratings = {tid: np.zeros(num_simulations) for tid in team_ids}
+    all_wins = {tid: np.zeros(num_simulations) for tid in team_ids}
+    all_losses = {tid: np.zeros(num_simulations) for tid in team_ids}
 
     for sim in range(num_simulations):
         # Copy records for this simulation
@@ -104,14 +111,13 @@ def simulate_season(
                 team_id=tid,
                 classification=r.classification,
                 division=r.division,
-                select=r.select,
+                select_status=r.select_status,
                 wins=r.wins,
                 losses=r.losses,
             )
             for tid, r in records.items()
         }
 
-        # Copy completed games
         sim_games: dict[int, list[GameResult]] = {
             tid: list(gs) for tid, gs in completed_games.items()
         }
@@ -121,7 +127,6 @@ def simulate_season(
         for i, game in enumerate(remaining_games):
             home_wins = random_draws[i] < win_probs[i]
 
-            # Update records
             if home_wins:
                 sim_records[game.home_team_id].wins += 1
                 sim_records[game.away_team_id].losses += 1
@@ -129,7 +134,6 @@ def simulate_season(
                 sim_records[game.home_team_id].losses += 1
                 sim_records[game.away_team_id].wins += 1
 
-            # Add game results for both teams
             sim_games.setdefault(game.home_team_id, []).append(GameResult(
                 team_id=game.home_team_id,
                 opponent_id=game.away_team_id,
@@ -145,12 +149,14 @@ def simulate_season(
                 opponent_classification=game.home_classification,
             ))
 
-        # Calculate final power ratings for every team in this simulation
+        # Calculate final power ratings for every team
         for tid in team_ids:
             team = sim_records[tid]
             games = sim_games.get(tid, [])
             result = calculate_power_rating(team, games, sim_records)
             all_ratings[tid][sim] = result.power_rating
+            all_wins[tid][sim] = sim_records[tid].wins
+            all_losses[tid][sim] = sim_records[tid].losses
 
     # Aggregate results
     projections: dict[int, TeamProjection] = {}
@@ -159,29 +165,43 @@ def simulate_season(
         projections[tid] = TeamProjection(
             team_id=tid,
             projected_rating_mean=round(float(np.mean(ratings)), 2),
+            projected_rating_median=round(float(np.median(ratings)), 2),
             projected_rating_p10=round(float(np.percentile(ratings, 10)), 2),
             projected_rating_p90=round(float(np.percentile(ratings, 90)), 2),
-            playoff_probability=0.0,  # calculated below per division
+            projected_rank_mean=0.0,
+            playoff_probability=0.0,
+            championship_probability=0.0,
+            projected_wins_mean=round(float(np.mean(all_wins[tid])), 1),
+            projected_losses_mean=round(float(np.mean(all_losses[tid])), 1),
         )
 
-    # Calculate playoff probabilities per division
-    divisions: dict[int, list[int]] = {}
+    # Calculate playoff/championship probabilities per bracket (division + select_status)
+    brackets: dict[str, list[int]] = {}
     for tid, rec in records.items():
-        divisions.setdefault(rec.division, []).append(tid)
+        key = _bracket_key(rec)
+        brackets.setdefault(key, []).append(tid)
 
-    for div_teams in divisions.values():
-        for tid in div_teams:
-            # Count simulations where this team finishes in top N of its division
-            in_playoff_count = 0
+    for bracket_teams in brackets.values():
+        for tid in bracket_teams:
+            in_playoff = 0
+            first_place = 0
+            rank_sum = 0.0
             for sim in range(num_simulations):
                 team_rating = all_ratings[tid][sim]
-                higher_count = sum(
-                    1 for other_tid in div_teams
-                    if other_tid != tid and all_ratings[other_tid][sim] > team_rating
+                higher = sum(
+                    1 for other in bracket_teams
+                    if other != tid and all_ratings[other][sim] > team_rating
                 )
-                if higher_count < playoff_cutoff:
-                    in_playoff_count += 1
-            projections[tid].playoff_probability = round(in_playoff_count / num_simulations, 4)
+                rank = higher + 1
+                rank_sum += rank
+                if rank <= playoff_cutoff:
+                    in_playoff += 1
+                if rank == 1:
+                    first_place += 1
+
+            projections[tid].projected_rank_mean = round(rank_sum / num_simulations, 1)
+            projections[tid].playoff_probability = round(in_playoff / num_simulations * 100, 2)
+            projections[tid].championship_probability = round(first_place / num_simulations * 100, 2)
 
     game_win_probs = {
         game.game_id: wp for game, wp in zip(remaining_games, win_probs)

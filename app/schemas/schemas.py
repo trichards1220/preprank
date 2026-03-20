@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 # --- Schools ---
@@ -12,12 +12,13 @@ class SchoolBase(BaseModel):
     city: str | None = None
     parish: str | None = None
     classification: str | None = None
-    division: int | None = None
-    select_status: bool = False
+    division: str | None = None
+    select_status: str | None = None
     enrollment: int | None = None
 
 class SchoolOut(SchoolBase):
     id: int
+    created_at: datetime | None = None
     model_config = {"from_attributes": True}
 
 
@@ -39,6 +40,8 @@ class TeamOut(BaseModel):
     sport_id: int
     season_year: int
     head_coach: str | None = None
+    division: str | None = None
+    select_status: str | None = None
     model_config = {"from_attributes": True}
 
 
@@ -48,13 +51,17 @@ class GameBase(BaseModel):
     home_team_id: int
     away_team_id: int
     sport_id: int
-    game_date: date
+    season_year: int
+    game_date: date | None = None
+    week_number: int | None = None
     home_score: int | None = None
     away_score: int | None = None
     status: str = "scheduled"
     is_district: bool = False
     is_playoff: bool = False
-    week_number: int | None = None
+    is_championship: bool = False
+    is_out_of_state: bool = False
+    source: str | None = None
 
 class GameOut(GameBase):
     id: int
@@ -71,7 +78,8 @@ class PowerRatingOut(BaseModel):
     power_rating: float
     strength_factor: float | None = None
     rank_in_division: int | None = None
-    calculated_at: datetime
+    total_teams_in_division: int | None = None
+    calculated_at: datetime | None = None
     model_config = {"from_attributes": True}
 
 
@@ -79,30 +87,32 @@ class PowerRatingOut(BaseModel):
 
 class ProjectedRatingOut(BaseModel):
     team_id: int
-    projected_rating_mean: float
-    projected_rating_p10: float
-    projected_rating_p90: float
-    playoff_probability: float
-    projected_rank: int | None = None
+    projected_rating_mean: float | None = None
+    projected_rating_median: float | None = None
+    projected_rating_p10: float | None = None
+    projected_rating_p90: float | None = None
+    projected_rank_mean: float | None = None
+    playoff_probability: float | None = None
+    championship_probability: float | None = None
+    projected_wins_mean: float | None = None
+    projected_losses_mean: float | None = None
     model_config = {"from_attributes": True}
 
 class GamePredictionOut(BaseModel):
     game_id: int
-    home_win_probability: float
+    home_win_probability: float | None = None
     predicted_home_score: float | None = None
     predicted_away_score: float | None = None
+    predicted_spread: float | None = None
     model_config = {"from_attributes": True}
 
-
-# --- What's At Stake ---
-
-class StakeAnalysis(BaseModel):
+class GameImpactOut(BaseModel):
     game_id: int
-    team_id: int
-    current_rating: float
-    projected_rating_if_win: float
-    projected_rating_if_loss: float
-    playoff_prob_if_win: float
-    playoff_prob_if_loss: float
-    projected_rank_if_win: int | None = None
-    projected_rank_if_loss: int | None = None
+    affected_team_id: int
+    rating_if_home_wins: float | None = None
+    rating_if_away_wins: float | None = None
+    rank_if_home_wins: int | None = None
+    rank_if_away_wins: int | None = None
+    playoff_prob_if_home_wins: float | None = None
+    playoff_prob_if_away_wins: float | None = None
+    model_config = {"from_attributes": True}

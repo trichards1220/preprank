@@ -14,6 +14,8 @@ async def list_teams(
     school_id: int | None = None,
     sport_id: int | None = None,
     season_year: int | None = None,
+    division: str | None = None,
+    select_status: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     query = select(Team)
@@ -23,6 +25,10 @@ async def list_teams(
         query = query.where(Team.sport_id == sport_id)
     if season_year:
         query = query.where(Team.season_year == season_year)
+    if division:
+        query = query.where(Team.division == division)
+    if select_status:
+        query = query.where(Team.select_status == select_status)
     result = await db.execute(query)
     return result.scalars().all()
 
