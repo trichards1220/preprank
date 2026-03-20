@@ -1,0 +1,3 @@
+season_year,week,team_name,opponent_name,team_score,opponent_score,is_home,is_district,opponent_division,opponent_select_status
+2025,1,Ruston,Natchitoches Central,35,14,TRUE,FALSE,I,Non-Select
+2025,1,Neville,Ouachita Parish,28,21,FALSE,FALSE,I,Non-Select
