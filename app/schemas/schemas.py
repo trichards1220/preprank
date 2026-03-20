@@ -112,6 +112,68 @@ class GamePredictionOut(BaseModel):
     predicted_spread: float | None = None
     model_config = {"from_attributes": True}
 
+# --- School Detail (with teams) ---
+
+class SchoolDetailOut(SchoolBase):
+    id: int
+    created_at: datetime | None = None
+    teams: list[TeamOut] = []
+    model_config = {"from_attributes": True}
+
+
+# --- Standings ---
+
+class StandingEntry(BaseModel):
+    team_id: int
+    school_name: str
+    division: str | None = None
+    select_status: str | None = None
+    power_rating: float
+    strength_factor: float | None = None
+    rank_in_division: int | None = None
+    wins: int | None = None
+    losses: int | None = None
+
+
+class StandingsOut(BaseModel):
+    sport_id: int
+    season_year: int
+    division: str
+    select_status: str
+    week_number: int
+    standings: list[StandingEntry]
+
+
+# --- What's At Stake ---
+
+class WhatsAtStakeOut(BaseModel):
+    team_id: int
+    game_id: int
+    opponent_team_id: int
+    opponent_school_name: str | None = None
+    game_date: date | None = None
+    week_number: int | None = None
+    is_home: bool
+    current_rating: float | None = None
+    current_rank: int | None = None
+    # Win scenario
+    projected_rating_if_win: float | None = None
+    projected_rank_if_win: int | None = None
+    playoff_prob_if_win: float | None = None
+    # Loss scenario
+    projected_rating_if_loss: float | None = None
+    projected_rank_if_loss: int | None = None
+    playoff_prob_if_loss: float | None = None
+
+
+# --- User Update ---
+
+class UserUpdate(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    push_token: str | None = None
+
+
 class GameImpactOut(BaseModel):
     game_id: int
     affected_team_id: int

@@ -5,13 +5,28 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models.users import User, UserFavorite, Notification
 from app.auth import get_current_user
-from app.schemas.schemas import UserOut, FavoriteCreate, FavoriteOut, NotificationOut
+from app.schemas.schemas import UserOut, UserUpdate, FavoriteCreate, FavoriteOut, NotificationOut
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/me", response_model=UserOut)
 async def get_me(user: User = Depends(get_current_user)):
+    return user
+
+
+@router.patch("/me", response_model=UserOut)
+async def update_me(
+    body: UserUpdate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update user profile. Only provided fields are updated."""
+    update_data = body.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(user, field, value)
+    await db.commit()
+    await db.refresh(user)
     return user
 
 

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
 from app.models.users import User
-from app.auth import hash_password, verify_password, create_access_token
+from app.auth import hash_password, verify_password, create_access_token, get_current_user
 from app.schemas.schemas import UserCreate, UserOut, TokenOut, LoginRequest
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -40,5 +40,12 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
+    token = create_access_token(user.id)
+    return TokenOut(access_token=token)
+
+
+@router.post("/refresh", response_model=TokenOut)
+async def refresh_token(user: User = Depends(get_current_user)):
+    """Exchange a valid (non-expired) JWT for a fresh one."""
     token = create_access_token(user.id)
     return TokenOut(access_token=token)

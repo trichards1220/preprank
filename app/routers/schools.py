@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.database import get_db
 from app.models.schools import School
-from app.schemas.schemas import SchoolOut
+from app.schemas.schemas import SchoolOut, SchoolDetailOut
 
 router = APIRouter(prefix="/schools", tags=["schools"])
 
@@ -17,7 +18,7 @@ async def list_schools(
     parish: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(School)
+    query = select(School).order_by(School.name)
     if classification:
         query = query.where(School.classification == classification)
     if division:
@@ -30,9 +31,14 @@ async def list_schools(
     return result.scalars().all()
 
 
-@router.get("/{school_id}", response_model=SchoolOut)
+@router.get("/{school_id}", response_model=SchoolDetailOut)
 async def get_school(school_id: int, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(School).where(School.id == school_id))
+    """Get school detail including all teams across sports and seasons."""
+    result = await db.execute(
+        select(School)
+        .where(School.id == school_id)
+        .options(selectinload(School.teams))
+    )
     school = result.scalar_one_or_none()
     if not school:
         raise HTTPException(status_code=404, detail="School not found")
