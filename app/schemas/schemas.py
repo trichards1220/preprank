@@ -67,6 +67,10 @@ class GameOut(GameBase):
     id: int
     model_config = {"from_attributes": True}
 
+class GameResultConfirm(BaseModel):
+    home_score: int
+    away_score: int
+
 
 # --- Power Ratings ---
 

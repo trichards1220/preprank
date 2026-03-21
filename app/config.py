@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     apple_sandbox_url: str = "https://sandbox.itunes.apple.com/verifyReceipt"
     # Google Play
     google_play_credentials_json: str = ""  # path to service account JSON
+    # Firebase Cloud Messaging
+    fcm_credentials_json: str = ""  # path to Firebase service account JSON
 
     model_config = {"env_file": ".env"}
 

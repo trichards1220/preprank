@@ -31,6 +31,18 @@ async def update_me(
     return user
 
 
+@router.put("/me/push-token")
+async def register_push_token(
+    token: str,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Register or update FCM push token for the current user."""
+    user.push_token = token
+    await db.commit()
+    return {"status": "ok"}
+
+
 @router.get("/me/favorites", response_model=list[FavoriteOut])
 async def list_favorites(
     user: User = Depends(get_current_user),
