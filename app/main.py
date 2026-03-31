@@ -53,6 +53,7 @@ app.include_router(webhooks.router)
 
 
 @app.get("/api/v1/ratings/rankings")
+@app.get("/api/v1/ratings/rankings")
 async def rankings_alias(
     sport: str = Query(default="Football"),
     season_year: int = Query(default=2025),
@@ -60,6 +61,59 @@ async def rankings_alias(
     division: str | None = None,
     select_status: str | None = None,
     db: AsyncSession = Depends(get_db),
+):
+    """Alias endpoint for frontend compatibility."""
+    from sqlalchemy import func
+
+    # If no data for requested week, fall back to latest available week
+    check = await db.execute(
+        select(func.max(PowerRating.week_number))
+        .join(Team, PowerRating.team_id == Team.id)
+        .join(Sport, Team.sport_id == Sport.id)
+        .where(Sport.name == sport)
+        .where(PowerRating.season_year == season_year)
+    )
+    latest_week = check.scalar()
+    if latest_week is None:
+        return []
+    if week_number > latest_week:
+        week_number = latest_week
+
+    query = (
+        select(PowerRating, Team, School, Sport)
+        .join(Team, PowerRating.team_id == Team.id)
+        .join(School, Team.school_id == School.id)
+        .join(Sport, Team.sport_id == Sport.id)
+        .where(Sport.name == sport)
+        .where(PowerRating.season_year == season_year)
+        .where(PowerRating.week_number == week_number)
+    )
+    if division:
+        query = query.where(Team.division == division)
+    if select_status:
+        query = query.where(Team.select_status == select_status)
+    query = query.order_by(PowerRating.power_rating.desc())
+
+    result = await db.execute(query)
+    rows = result.all()
+
+    return [
+        {
+            "rank": i + 1,
+            "school_name": school.name,
+            "school_id": school.id,
+            "team_id": team.id,
+            "division": team.division,
+            "select_status": team.select_status,
+            "power_rating": float(pr.power_rating),
+            "strength_factor": float(pr.strength_factor),
+            "rank_in_division": pr.rank_in_division,
+            "total_teams_in_division": pr.total_teams_in_division,
+            "week_number": pr.week_number,
+            "season_year": pr.season_year,
+        }
+        for i, (pr, team, school, sport_obj) in enumerate(rows)
+    ]
 ):
     """Alias endpoint for frontend compatibility."""
     query = (
