@@ -101,7 +101,43 @@ async def rankings_alias(
         for i, (pr, team, school, sport_obj) in enumerate(rows)
     ]
 
-
+@app.get("/api/v1/ratings/{team_id}")
+async def team_ratings(
+    team_id: int,
+    season_year: int = Query(default=2025),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get all power ratings for a specific team."""
+    query = (
+        select(PowerRating, Team, School, Sport)
+        .join(Team, PowerRating.team_id == Team.id)
+        .join(School, Team.school_id == School.id)
+        .join(Sport, Team.sport_id == Sport.id)
+        .where(PowerRating.team_id == team_id)
+        .where(PowerRating.season_year == season_year)
+        .order_by(PowerRating.week_number.desc())
+    )
+    result = await db.execute(query)
+    rows = result.all()
+    if not rows:
+        return []
+    return [
+        {
+            "team_id": team.id,
+            "school_name": school.name,
+            "school_id": school.id,
+            "sport": sport_obj.name,
+            "division": team.division,
+            "select_status": team.select_status,
+            "power_rating": float(pr.power_rating),
+            "strength_factor": float(pr.strength_factor),
+            "rank_in_division": pr.rank_in_division,
+            "total_teams_in_division": pr.total_teams_in_division,
+            "week_number": pr.week_number,
+            "season_year": pr.season_year,
+        }
+        for pr, team, school, sport_obj in rows
+    ]
 @app.get("/health")
 async def health():
     return {"status": "ok"}
