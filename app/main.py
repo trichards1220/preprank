@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import sports, schools, teams, games, power_ratings, predictions, auth, users, webhooks, pickem, hype, badges_router, subscriptions
 
@@ -6,6 +7,18 @@ app = FastAPI(
     title="PrepRank",
     description="Louisiana high school sports power ranking prediction engine",
     version="0.2.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://preprank-web.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:3001",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Public endpoints
