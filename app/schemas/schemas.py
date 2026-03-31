@@ -42,6 +42,8 @@ class TeamOut(BaseModel):
     head_coach: str | None = None
     division: str | None = None
     select_status: str | None = None
+    school_name: str | None = None
+    classification: str | None = None
     model_config = {"from_attributes": True}
 
 
