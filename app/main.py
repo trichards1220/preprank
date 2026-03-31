@@ -1,6 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.database import get_db
+from app.models.power_ratings import PowerRating
+from app.models.teams import Team
+from app.models.schools import School
+from app.models.sports import Sport
 from app.routers import sports, schools, teams, games, power_ratings, predictions, auth, users, webhooks, pickem, hype, badges_router, subscriptions
 
 app = FastAPI(
@@ -43,6 +50,53 @@ app.include_router(subscriptions.router, prefix="/api/v1")
 
 # Stripe webhooks (no /api/v1 prefix — Stripe calls these directly)
 app.include_router(webhooks.router)
+
+
+@app.get("/api/v1/ratings/rankings")
+async def rankings_alias(
+    sport: str = Query(default="Football"),
+    season_year: int = Query(default=2025),
+    week_number: int = Query(default=10),
+    division: str | None = None,
+    select_status: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    """Alias endpoint for frontend compatibility."""
+    query = (
+        select(PowerRating, Team, School, Sport)
+        .join(Team, PowerRating.team_id == Team.id)
+        .join(School, Team.school_id == School.id)
+        .join(Sport, Team.sport_id == Sport.id)
+        .where(Sport.name == sport)
+        .where(PowerRating.season_year == season_year)
+        .where(PowerRating.week_number == week_number)
+    )
+    if division:
+        query = query.where(Team.division == division)
+    if select_status:
+        query = query.where(Team.select_status == select_status)
+    query = query.order_by(PowerRating.power_rating.desc())
+
+    result = await db.execute(query)
+    rows = result.all()
+
+    return [
+        {
+            "rank": i + 1,
+            "school_name": school.name,
+            "school_id": school.id,
+            "team_id": team.id,
+            "division": team.division,
+            "select_status": team.select_status,
+            "power_rating": float(pr.power_rating),
+            "strength_factor": float(pr.strength_factor),
+            "rank_in_division": pr.rank_in_division,
+            "total_teams_in_division": pr.total_teams_in_division,
+            "week_number": pr.week_number,
+            "season_year": pr.season_year,
+        }
+        for i, (pr, team, school, sport_obj) in enumerate(rows)
+    ]
 
 
 @app.get("/health")
