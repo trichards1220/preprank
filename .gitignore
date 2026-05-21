@@ -1,21 +1,32 @@
-__pycache__/
-*.py[cod]
-*.egg-info/
-dist/
-build/
-.eggs/
-*.egg
-.env
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Python
+**/.venv/
 .venv/
-venv/
-env/
-*.db
-*.sqlite3
-data/pdfs/*.pdf
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/*.egg-info/
+*.egg-info/
+
+# Next.js / build output
+**/.next/
+out/
+build/
+dist/
+
+# Secrets / env
+.env
+.env.local
+.env.*.local
+**/.env
+!**/.env.example
+!**/.env.production.example
+
+# Runtime caches / generated artifacts
+**/share_cache/
+*.log
 .DS_Store
 Thumbs.db

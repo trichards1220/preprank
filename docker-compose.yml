@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: preprank-db
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: preprank
+      POSTGRES_PASSWORD: preprank
+      POSTGRES_DB: preprank
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - preprank_pgdata:/var/lib/postgresql/data
+
+volumes:
+  preprank_pgdata:

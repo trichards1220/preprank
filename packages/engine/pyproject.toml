@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "preprank-engine"
+version = "0.1.0"
+description = "PrepRank engine - power rating calculation and Monte Carlo simulations"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26.0",
+    "scipy>=1.13.0",
+    "pydantic>=2.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+]
+cli = [
+    "psycopg2-binary>=2.9.9",
+    "sqlalchemy>=2.0.30",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
