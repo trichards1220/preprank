@@ -61,7 +61,7 @@ def parse_args():
     )
     parser.add_argument(
         "--csv",
-        default=os.path.join(os.path.dirname(__file__), "..", "..", "2025_football_power_ratings_final.csv"),
+        default=os.path.join(os.path.dirname(__file__), "..", "..", "data", "seed", "2025_football_power_ratings_final.csv"),
         help="Path to the football power ratings CSV file",
     )
     return parser.parse_args()

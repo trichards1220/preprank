@@ -52,7 +52,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://preprank:preprank@localhost:5432/preprank
         run: |
-          python supabase/seed/seed.py --csv 2025_football_power_ratings_final.csv || true
+          python supabase/seed/seed.py --csv data/seed/2025_football_power_ratings_final.csv
 
       - name: Run API tests
         env:
