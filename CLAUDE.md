@@ -38,6 +38,18 @@ Database (local):
 - `docker compose up -d` — local Postgres on 5432
 - Alembic migrations live in `apps/api/alembic/` (`alembic upgrade head`)
 
+## Tests need a seeded database
+
+Most API tests are unit-level and pass against an empty DB, but the integration tests in `apps/api/tests/test_integration.py` (and `test_score_ingestion.py::test_recalculate_ratings`) assert that seed data exists — they fail with a misleading `assert 0 > 0` if the DB is empty. The full local/CI sequence is: start Postgres → `alembic upgrade head` → seed → run pytest.
+
+Seeding loads `data/seed/2025_football_power_ratings_final.csv` (the 298 football teams/ratings) via `supabase/seed/seed.py`. Run it from the repo root with `DATABASE_URL` set:
+
+```
+python supabase/seed/seed.py --csv data/seed/2025_football_power_ratings_final.csv
+```
+
+The script seeds sports → schools → teams → power_ratings in one transaction and commits only at the end (a missing CSV aborts the whole thing). CI (`.github/workflows/ci.yml`) runs exactly this between migrations and tests — do not re-add `|| true` to that step; masking a seed failure produces the confusing downstream test errors.
+
 ## Port reality (a known footgun)
 
 The dev ports are inconsistent across files — align them or local dev silently fails to connect:
